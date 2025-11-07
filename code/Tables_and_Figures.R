@@ -66,7 +66,7 @@ plot_svd = ggplot(data_svd)+
         axis.title.x = element_text(face="bold",size=18),
         plot.title = element_text(hjust=0.5,face="bold"))
 
-ggsave("plot1_paper.pdf",plot_svd,height = 10, width = 20, units = "cm")
+ggsave("figures/plot1_paper.pdf",plot_svd,height = 10, width = 20, units = "cm")
 
 
 #### Figure 3 ####
@@ -112,7 +112,7 @@ plot_sim = ggplot(plot_sim_data) +
   facet_wrap(sex~code,nrow=2)
 
 
-ggsave("plot3_paper.pdf",plot_sim,height = 15, width = 30, units = "cm")
+ggsave("figures/plot3_paper.pdf",plot_sim,height = 15, width = 30, units = "cm")
 
 #### Table 1 ####
 
@@ -235,7 +235,7 @@ plot_time_series = rbind(utah_males,utah_females,
         axis.title.x = element_text(face="bold",size=14),
         plot.title = element_text(hjust=0.5,face="bold"))
 
-ggsave("plot4_paper.pdf",plot_time_series,height = 15, width = 30, units = "cm")
+ggsave("figures/plot4_paper.pdf",plot_time_series,height = 15, width = 30, units = "cm")
 
 #### Figure 5 ####
 
@@ -397,7 +397,7 @@ legend <- grid.draw(legend_grob)
 
 plot_map_TFR = plot_california/plot_utah/legend
 
-ggsave("plot5_paper.pdf",plot_map_TFR,height = 15, width = 30, units = "cm")
+ggsave("figures/plot5_paper.pdf",plot_map_TFR,height = 15, width = 30, units = "cm")
 
 
 #### Figure 6 #### 
@@ -480,6 +480,6 @@ plot_TFR_ratio_california = plot_usmap(data=data_ratio_map_california,values = "
 plot_map_TFR_ratio = (plot_TFR_ratio_california+plot_TFR_ratio_utah)
 
 
-ggsave("plot6_paper.pdf",plot_map_TFR_ratio,height = 15, width = 30, units = "cm")
+ggsave("figures/plot6_paper.pdf",plot_map_TFR_ratio,height = 15, width = 30, units = "cm")
 
   
