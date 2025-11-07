@@ -22,7 +22,7 @@ code_male <- nimbleCode({
   
   for(i in 1:n){
     for(t in 1:Ti){
-      rho[i,t] ~ dnorm(0,sd=1)
+      rho[i,t] ~ dnorm(0,sd=sigma_rho)
       
     }
   }
