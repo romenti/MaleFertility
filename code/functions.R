@@ -135,6 +135,81 @@ data_input_men = function(data,statefip="06",usa_geo,m_male,
 }
 
 
+data_input_women = function(data,statefip="06",usa_geo,m_male,
+                      X_male,years=1982:2019){
+  
+  adj_matrix = adj_matrix_constr(usa_geo,fips="06") 
+  data = filter(data,year %in% years,state %in% statefip) 
+  spatial_object = as.carAdjacency(adj_matrix)
+  state_i = data %>%
+    ungroup() %>%
+    select(state) %>%
+    pull()
+  
+  year_i = data %>%
+    ungroup() %>%
+    select(year) %>%
+    pull()
+  
+  county_i = data %>%
+    ungroup() %>%
+    select(fips) %>%
+    pull()
+  
+  
+  state_i = as.integer(factor(state_i,levels=unique(data$state)))
+  year_i = as.integer(factor(year_i,levels=unique(data$year)))
+  county_i = as.integer(factor(county_i,levels=unique(data$fips)))
+  
+  
+  
+  N = nrow(data)
+  Ti = length(unique(data$year))
+  S = length(unique(data$state))
+  n = length(unique(data$fips))
+  
+  consts = list(N = nrow(data),
+                Ti = length(unique(data$year)),
+                S  = length(unique(data$state)),
+                n  = length(spatial_object$num),
+                L = length(spatial_object$weights),
+                state_i = state_i,
+                year_i = year_i,
+                county_i = county_i,
+                adj = spatial_object$adj, 
+                num = spatial_object$num,
+                weights= spatial_object$weights)
+  
+  nimble_input = list(
+    C = as.integer(data$C),
+    W = as.matrix(data[, paste0('W',seq(15,45,5))]),
+    Lx_star = as.matrix(data[, paste0('L',seq(0,45,5))]),
+    VAR_Lx_star = (sqrt(as.matrix(data[, paste0('VAR_L',seq(0,45,5))]))),
+    TFR_nat = data$TFR_nat,
+    m = m_male,
+    X = X_male)
+  
+  init=list(beta = matrix(runif(N*2, min=-.10, max=.10) , N ,2),
+            TFR  = pmax(.10, rnorm(N, 2, sd=.50)),
+            Lx = matrix(runif(N*10, min=4.5, max=5) , N ,10),
+            sigma_TFR_nat =1,
+            s = rep(0,n),
+            delta = rep(0,Ti),
+            sigma_delta=1,
+            tau_s=0.1,
+            rho = matrix(0,n,Ti),
+            sigma_rho=1)
+  
+  
+  return(list(nimble_input=nimble_input,consts=consts,init=init))
+  
+  
+  
+}
+
+
+
+
 
 
 
